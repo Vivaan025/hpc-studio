@@ -2,8 +2,8 @@ export const SITE = {
   name: "HPC Studio",
   description: "Interactive CUDA kernel visualizations — see what happens inside the GPU",
   url: "https://hpcstudio.dev",
-  github: "https://github.com/hpc-studio",
-  twitter: "https://twitter.com/hpcstudio",
+  github: "https://github.com/vivaan025/hpc-studio",
+  twitter: "https://x.com/LakhaniVivaan",
 } as const;
 
 export const NAV_LINKS = [
