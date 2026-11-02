@@ -1,8 +1,18 @@
 "use client";
 
 import { use } from "react";
-import { motion } from "framer-motion";
 import Link from "next/link";
+import CudaGraphsPost from "@/components/blog/posts/CudaGraphsPost";
+
+// Posts that are written as React components (so they can embed simulations)
+const COMPONENT_POSTS: Record<string, { title: string; date: string; readTime: string; Component: React.ComponentType }> = {
+  "cuda-graphs-explained": {
+    title: "CUDA Graphs: Stop Paying the Launch Tax",
+    date: "Oct 31, 2026",
+    readTime: "15 min",
+    Component: CudaGraphsPost,
+  },
+};
 
 const POSTS: Record<string, { title: string; date: string; readTime: string; content: string }> = {
   "understanding-gpu-architecture": {
@@ -127,37 +137,35 @@ __shared__ float tile[32][32 + 1]; // +1 padding eliminates conflicts
 
 export default function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
-  const post = POSTS[slug];
+  const componentPost = COMPONENT_POSTS[slug];
+  const post = componentPost ?? POSTS[slug];
 
   if (!post) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="font-heading text-4xl font-bold text-text-primary mb-4">Post Not Found</h1>
-          <Link href="/blog" className="text-primary hover:text-primary-glow transition-colors">
-            ← Back to Blog
-          </Link>
-        </div>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-24 text-center">
+        <h1 className="font-heading text-2xl font-bold text-[#2a1c0d] mb-4">Post Not Found</h1>
+        <Link href="/blog" className="text-sm text-[#967f5e] hover:text-[#5e4a30] transition-colors">
+          ← Back to Blog
+        </Link>
       </div>
     );
   }
 
-  // Simple markdown-like rendering
   const renderContent = (content: string) => {
     return content.split("\n").map((line, i) => {
       const trimmed = line.trim();
       if (!trimmed) return <br key={i} />;
-      if (trimmed.startsWith("## ")) return <h2 key={i} className="font-heading text-2xl font-bold text-text-primary mt-10 mb-4">{trimmed.slice(3)}</h2>;
-      if (trimmed.startsWith("### ")) return <h3 key={i} className="font-heading text-lg font-bold text-text-primary mt-8 mb-3">{trimmed.slice(4)}</h3>;
-      if (trimmed.startsWith("> ")) return <blockquote key={i} className="border-l-4 border-primary pl-4 italic text-text-secondary my-4">{trimmed.slice(2)}</blockquote>;
+      if (trimmed.startsWith("## ")) return <h2 key={i} className="font-heading text-xl font-bold text-[#2a1c0d] mt-10 mb-4">{trimmed.slice(3)}</h2>;
+      if (trimmed.startsWith("### ")) return <h3 key={i} className="font-heading text-base font-semibold text-[#2a1c0d] mt-8 mb-3">{trimmed.slice(4)}</h3>;
+      if (trimmed.startsWith("> ")) return <blockquote key={i} className="border-l-2 border-[#2a1c0d] pl-4 italic text-[#5e4a30] my-4">{trimmed.slice(2)}</blockquote>;
       if (trimmed.startsWith("| ")) {
-        return <p key={i} className="font-mono text-xs text-text-secondary">{trimmed}</p>;
+        return <p key={i} className="font-mono text-xs text-[#5e4a30]">{trimmed}</p>;
       }
       if (trimmed.startsWith("- ") || trimmed.match(/^\d+\. /)) {
         const text = trimmed.replace(/^[-\d]+[.)]?\s/, "");
-        return <li key={i} className="text-text-secondary text-sm leading-relaxed ml-4 list-disc">{renderInline(text)}</li>;
+        return <li key={i} className="text-[#5e4a30] text-sm leading-relaxed ml-4 list-disc">{renderInline(text)}</li>;
       }
-      return <p key={i} className="text-text-secondary leading-relaxed mb-4">{renderInline(trimmed)}</p>;
+      return <p key={i} className="text-[#5e4a30] leading-relaxed mb-4">{renderInline(trimmed)}</p>;
     });
   };
 
@@ -165,38 +173,33 @@ export default function BlogPostPage({ params }: { params: Promise<{ slug: strin
     const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g);
     return parts.map((part, i) => {
       if (part.startsWith("**") && part.endsWith("**")) {
-        return <strong key={i} className="text-text-primary font-semibold">{part.slice(2, -2)}</strong>;
+        return <strong key={i} className="text-[#2a1c0d] font-semibold">{part.slice(2, -2)}</strong>;
       }
       if (part.startsWith("`") && part.endsWith("`")) {
-        return <code key={i} className="px-1.5 py-0.5 rounded bg-primary/10 text-primary text-xs font-mono">{part.slice(1, -1)}</code>;
+        return <code key={i} className="px-1.5 py-0.5 bg-[#ebe0ca] text-[#2a1c0d] text-xs font-mono">{part.slice(1, -1)}</code>;
       }
       return <span key={i}>{part}</span>;
     });
   };
 
   return (
-    <div className="min-h-screen">
-      <section className="relative py-16 px-4 sm:px-6 lg:px-8 border-b border-border-subtle">
-        <div className="absolute inset-0 dot-grid opacity-20" />
-        <div className="relative max-w-4xl mx-auto">
-          <Link href="/blog" className="inline-flex items-center gap-2 text-sm text-text-muted hover:text-primary transition-colors mb-6">
-            ← Back to Blog
-          </Link>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="font-heading text-3xl sm:text-4xl font-bold text-text-primary mb-4">
-            {post.title}
-          </motion.h1>
-          <div className="flex items-center gap-4 text-sm text-text-muted">
-            <span>{post.date}</span>
-            <span>·</span>
-            <span>{post.readTime} read</span>
-          </div>
+    <div className={`${componentPost ? "max-w-5xl" : "max-w-3xl"} mx-auto px-4 sm:px-6`}>
+      <section className="py-10 border-b border-[#dccfb2]">
+        <Link href="/blog" className="text-xs text-[#967f5e] hover:text-[#5e4a30] transition-colors font-mono">
+          ← Back to Blog
+        </Link>
+        <h1 className="font-heading text-2xl sm:text-3xl font-bold text-[#2a1c0d] mt-4 mb-2">
+          {post.title}
+        </h1>
+        <div className="flex items-center gap-3 text-xs text-[#967f5e] font-mono">
+          <span>{post.date}</span>
+          <span>·</span>
+          <span>{post.readTime} read</span>
         </div>
       </section>
 
-      <section className="py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          {renderContent(post.content)}
-        </div>
+      <section className="py-8">
+        {componentPost ? <componentPost.Component /> : renderContent(POSTS[slug].content)}
       </section>
     </div>
   );

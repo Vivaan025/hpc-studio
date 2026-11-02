@@ -1,10 +1,17 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { BlogPost } from "@/lib/types";
 
 const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: "cuda-graphs-explained",
+    title: "CUDA Graphs: Stop Paying the Launch Tax",
+    date: "2026-10-31",
+    author: "HPC Studio",
+    tags: ["CUDA Graphs", "Performance", "Streams"],
+    excerpt: "A real 30-kernel pipeline, timed before and after converting it to a CUDA Graph on a laptop GPU. 6.4× faster with bit-identical output, plus the case where it does nothing. With step-by-step animations of capture, instantiate, and replay.",
+    readTime: "15 min",
+    difficulty: "beginner",
+  },
   {
     slug: "understanding-gpu-architecture",
     title: "Understanding GPU Architecture from Scratch",
@@ -37,71 +44,55 @@ const BLOG_POSTS: BlogPost[] = [
   },
 ];
 
-const DIFF_COLORS: Record<string, { bg: string; text: string }> = {
-  beginner: { bg: "bg-accent-green/10", text: "text-accent-green" },
-  intermediate: { bg: "bg-accent-orange/10", text: "text-accent-orange" },
-  advanced: { bg: "bg-accent-red/10", text: "text-accent-red" },
+const diffLabel: Record<string, string> = {
+  beginner: "Beginner",
+  intermediate: "Intermediate",
+  advanced: "Advanced",
 };
 
 export default function BlogPage() {
   return (
-    <div className="min-h-screen">
-      <section className="relative py-16 px-4 sm:px-6 lg:px-8 border-b border-border-subtle">
-        <div className="absolute inset-0 dot-grid opacity-30" />
-        <div className="relative max-w-7xl mx-auto">
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-primary font-mono text-sm mb-3">
-            {"// blog"}
-          </motion.p>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="font-heading text-4xl sm:text-5xl font-bold text-text-primary mb-4">
-            Blog
-          </motion.h1>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-text-secondary max-w-2xl text-lg">
-            Deep dives into GPU computing concepts, optimization techniques, and CUDA programming patterns.
-          </motion.p>
-        </div>
+    <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      <section className="py-12 border-b border-[#dccfb2]">
+        <h1 className="font-heading text-2xl sm:text-3xl font-bold text-[#2a1c0d] mb-2">
+          Blog
+        </h1>
+        <p className="text-sm text-[#5e4a30]">
+          Deep dives into GPU computing concepts, optimization techniques, and CUDA programming patterns.
+        </p>
       </section>
 
-      <section className="py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto space-y-6">
-          {BLOG_POSTS.map((post, i) => {
-            const d = DIFF_COLORS[post.difficulty];
-            return (
-              <motion.article
-                key={post.slug}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <Link href={`/blog/${post.slug}`}>
-                  <div className="glass rounded-2xl p-6 sm:p-8 group hover:bg-surface-elevated/50 transition-all duration-300 cursor-pointer">
-                    <div className="flex items-center gap-3 mb-3">
-                      <span className={`px-2 py-0.5 rounded-md text-xs font-medium ${d.bg} ${d.text}`}>
-                        {post.difficulty}
-                      </span>
-                      <span className="text-xs text-text-muted">{post.date}</span>
-                      <span className="text-xs text-text-muted">·</span>
-                      <span className="text-xs text-text-muted">{post.readTime}</span>
-                    </div>
-                    <h2 className="font-heading text-xl sm:text-2xl font-bold text-text-primary mb-3 group-hover:text-primary transition-colors">
-                      {post.title}
-                    </h2>
-                    <p className="text-text-secondary text-sm leading-relaxed mb-4">
-                      {post.excerpt}
-                    </p>
-                    <div className="flex items-center gap-2">
-                      {post.tags.map((tag) => (
-                        <span key={tag} className="px-2 py-0.5 rounded-md text-xs bg-border-subtle/30 text-text-muted">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </Link>
-              </motion.article>
-            );
-          })}
-        </div>
-      </section>
+      <div className="space-y-0 border-t border-[#dccfb2]">
+        {BLOG_POSTS.map((post) => (
+          <article key={post.slug}>
+            <Link
+              href={`/blog/${post.slug}`}
+              className="block py-6 border-b border-[#dccfb2] group"
+            >
+              <div className="flex items-center gap-3 mb-1.5 text-xs text-[#967f5e] font-mono">
+                <span>{diffLabel[post.difficulty]}</span>
+                <span>·</span>
+                <span>{post.date}</span>
+                <span>·</span>
+                <span>{post.readTime}</span>
+              </div>
+              <h2 className="font-heading text-base font-semibold text-[#2a1c0d] mb-1.5 group-hover:underline">
+                {post.title}
+              </h2>
+              <p className="text-sm text-[#5e4a30] leading-relaxed mb-2">
+                {post.excerpt}
+              </p>
+              <div className="flex gap-3">
+                {post.tags.map((tag) => (
+                  <span key={tag} className="text-xs text-[#967f5e] font-mono">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </Link>
+          </article>
+        ))}
+      </div>
     </div>
   );
 }

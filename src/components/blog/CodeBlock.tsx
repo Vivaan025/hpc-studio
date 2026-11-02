@@ -1,9 +1,8 @@
 "use client";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import oneLight from "react-syntax-highlighter/dist/esm/styles/prism/one-light";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
 interface CodeBlockProps {
   code: string;
@@ -28,73 +27,38 @@ export default function CodeBlock({
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Map cuda to cpp for syntax highlighting (Prism doesn't have cuda)
   const prismLanguage = language === "cuda" ? "cpp" : language;
 
   return (
-    <div className="code-block group relative">
-      {/* Header */}
+    <div className="border border-[#dccfb2] group relative">
       {title && (
-        <div className="flex items-center justify-between px-4 py-2.5 border-b border-border-subtle bg-surface/50">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-accent-red/60" />
-              <div className="w-3 h-3 rounded-full bg-accent-orange/60" />
-              <div className="w-3 h-3 rounded-full bg-accent-green/60" />
-            </div>
-            <span className="text-xs font-mono text-text-muted ml-2">
-              {title}
-            </span>
-          </div>
+        <div className="flex items-center justify-between px-4 py-2 border-b border-[#dccfb2]">
+          <span className="text-[10px] font-mono text-[#967f5e] uppercase tracking-wider">
+            {title}
+          </span>
           <button
             onClick={handleCopy}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs text-text-muted hover:text-text-primary hover:bg-surface-elevated transition-all opacity-0 group-hover:opacity-100"
+            className="text-[10px] font-mono text-[#967f5e] hover:text-[#5e4a30] transition-colors opacity-0 group-hover:opacity-100"
           >
-            <AnimatePresence mode="wait">
-              {copied ? (
-                <motion.span
-                  key="copied"
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                  className="text-accent-green"
-                >
-                  ✓ Copied
-                </motion.span>
-              ) : (
-                <motion.span
-                  key="copy"
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                >
-                  Copy
-                </motion.span>
-              )}
-            </AnimatePresence>
+            {copied ? "✓ Copied" : "Copy"}
           </button>
         </div>
       )}
 
-      {/* Code */}
       <SyntaxHighlighter
         language={prismLanguage}
-        style={vscDarkPlus}
+        style={oneLight}
         showLineNumbers={showLineNumbers}
         wrapLines={true}
         lineProps={(lineNumber) => {
           const isHighlighted = highlightedLines.includes(lineNumber);
           return {
             style: {
-              backgroundColor: isHighlighted
-                ? "rgba(99, 102, 241, 0.12)"
-                : "transparent",
-              borderLeft: isHighlighted
-                ? "3px solid #6366f1"
-                : "3px solid transparent",
+              backgroundColor: isHighlighted ? "rgba(0, 0, 0, 0.04)" : "transparent",
+              borderLeft: isHighlighted ? "3px solid #2a1c0d" : "3px solid transparent",
               display: "block",
               paddingLeft: "0.5rem",
-              transition: "all 0.3s ease",
+              transition: "all 0.15s ease",
             },
           };
         }}

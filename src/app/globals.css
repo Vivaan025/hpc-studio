@@ -1,37 +1,41 @@
 @import "tailwindcss";
 
-/* ── HPC Studio Design System ── */
+/* ── HPC Studio Design System — Minimalist Academic ── */
 
 @theme inline {
-  --color-background: #0a0a0f;
-  --color-surface: #12121a;
-  --color-surface-elevated: #1a1a2e;
-  --color-border-subtle: #2a2a3e;
-  --color-primary: #6366f1;
-  --color-primary-glow: #818cf8;
-  --color-secondary: #22d3ee;
-  --color-accent-green: #4ade80;
-  --color-accent-orange: #fb923c;
-  --color-accent-red: #f87171;
-  --color-text-primary: #e2e8f0;
-  --color-text-secondary: #94a3b8;
-  --color-text-muted: #64748b;
+  --color-white: #f7f0e1;
+  --color-black: #1c1206;
+  --color-background: #f7f0e1;
+  --color-surface: #f1e7d5;
+  --color-surface-elevated: #ebe0ca;
+  --color-border-subtle: #dccfb2;
+  --color-border-strong: #cbbb98;
+  --color-primary: #2a1c0d;
+  --color-primary-hover: #41301c;
+  --color-secondary: #5e4a30;
+  --color-accent: #1c1206;
+  --color-text-primary: #2a1c0d;
+  --color-text-secondary: #5e4a30;
+  --color-text-muted: #967f5e;
+
+  /* Simulation cell states */
+  --color-cell-bg: #f1e7d5;
+  --color-cell-border: #cfc09e;
+  --color-cell-active: #ebe0ca;
+  --color-cell-highlight: #2a1c0d;
+  --color-cell-highlight-text: #f7f0e1;
+  --color-cell-src: #cfc09e;
+  --color-cell-dst: #41301c;
 
   --font-heading: "Space Grotesk", sans-serif;
   --font-body: "Inter", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
-
-  --animate-fade-in: fade-in 0.6s ease-out;
-  --animate-slide-up: slide-up 0.6s ease-out;
-  --animate-glow-pulse: glow-pulse 3s ease-in-out infinite;
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-grid-move: grid-move 20s linear infinite;
 }
 
 /* ── Base Styles ── */
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
@@ -46,6 +50,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: 700;
   letter-spacing: -0.02em;
+  color: var(--color-text-primary);
 }
 
 code, pre, .font-mono {
@@ -55,12 +60,12 @@ code, pre, .font-mono {
 /* ── Scrollbar ── */
 
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-background);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -72,75 +77,22 @@ code, pre, .font-mono {
   background: var(--color-text-muted);
 }
 
-/* ── Glassmorphism ── */
+/* ── Panels ── */
 
-.glass {
-  background: rgba(18, 18, 26, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(42, 42, 62, 0.5);
+.panel {
+  background: var(--color-background);
+  border: 1px solid var(--color-border-subtle);
 }
 
-.glass-strong {
-  background: rgba(18, 18, 26, 0.9);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(42, 42, 62, 0.7);
-}
-
-/* ── Gradient Borders ── */
-
-.gradient-border {
-  position: relative;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.gradient-border::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-/* ── Dot Grid Background ── */
-
-.dot-grid {
-  background-image: radial-gradient(circle, rgba(99, 102, 241, 0.15) 1px, transparent 1px);
-  background-size: 32px 32px;
-}
-
-.dot-grid-animated {
-  background-image: radial-gradient(circle, rgba(99, 102, 241, 0.15) 1px, transparent 1px);
-  background-size: 32px 32px;
-  animation: var(--animate-grid-move);
-}
-
-/* ── Glow Effects ── */
-
-.glow-primary {
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3), 0 0 60px rgba(99, 102, 241, 0.1);
-}
-
-.glow-secondary {
-  box-shadow: 0 0 20px rgba(34, 211, 238, 0.3), 0 0 60px rgba(34, 211, 238, 0.1);
-}
-
-.text-glow {
-  text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+.panel-elevated {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
 }
 
 /* ── Code Block Styles ── */
 
 .code-highlight-line {
-  background: rgba(99, 102, 241, 0.15);
+  background: rgba(0, 0, 0, 0.04);
   border-left: 3px solid var(--color-primary);
   margin-left: -3px;
   display: block;
@@ -149,7 +101,6 @@ code, pre, .font-mono {
 .code-block {
   background: var(--color-surface);
   border: 1px solid var(--color-border-subtle);
-  border-radius: 12px;
   overflow: hidden;
 }
 
@@ -160,48 +111,112 @@ code, pre, .font-mono {
   line-height: 1.7;
 }
 
-/* ── Animations ── */
+/* ── Simulation Grid Cells ── */
 
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.sim-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  background: var(--color-cell-bg);
+  border: 1px solid var(--color-cell-border);
+  color: var(--color-text-secondary);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+.sim-cell.active {
+  background: var(--color-cell-active);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-strong);
 }
 
-@keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
-  50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.4); }
+.sim-cell.highlight {
+  background: var(--color-cell-highlight);
+  color: var(--color-cell-highlight-text);
+  border-color: var(--color-cell-highlight);
+  font-weight: 700;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+.sim-cell.src {
+  background: var(--color-cell-src);
+  color: var(--color-text-primary);
+  border-color: #967f5e;
 }
 
-@keyframes grid-move {
-  0% { background-position: 0 0; }
-  100% { background-position: 32px 32px; }
+.sim-cell.dst {
+  background: var(--color-cell-dst);
+  color: #f7f0e1;
+  border-color: var(--color-cell-dst);
+  font-weight: 700;
 }
 
-@keyframes data-flow {
-  0% { stroke-dashoffset: 20; }
-  100% { stroke-dashoffset: 0; }
+.sim-cell.dead {
+  color: var(--color-text-muted);
+  opacity: 0.4;
 }
 
-@keyframes pulse-ring {
-  0% { transform: scale(0.8); opacity: 1; }
-  100% { transform: scale(1.4); opacity: 0; }
+.sim-cell.written {
+  background: #e5d9c0;
+  color: var(--color-text-primary);
+  border-color: #967f5e;
+}
+
+.sim-cell.result {
+  background: var(--color-accent);
+  color: #f7f0e1;
+  border-color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* ── Simulation flying numbers ── */
+
+.flyer {
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #f7f0e1;
+  background: var(--color-accent);
+  border: 1px solid #41301c;
+  padding: 2px 5px;
+  transition-property: transform, opacity;
+  transition-timing-function: cubic-bezier(.25,.7,.35,1);
+  will-change: transform;
+}
+
+/* ── Pipeline phases ── */
+
+.phase-indicator {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-text-muted);
+  background: var(--color-background);
+  transition: all 0.2s;
+}
+
+.phase-indicator.active {
+  color: #f7f0e1;
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  font-weight: 700;
 }
 
 /* ── Selection ── */
 
 ::selection {
-  background: rgba(99, 102, 241, 0.3);
-  color: #fff;
+  background: rgba(0, 0, 0, 0.12);
+  color: #1c1206;
 }
 
 /* ── Utility: Hide scrollbar ── */
@@ -213,4 +228,12 @@ code, pre, .font-mono {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* ── Reduced motion ── */
+
+@media (prefers-reduced-motion: reduce) {
+  .flyer {
+    display: none;
+  }
 }

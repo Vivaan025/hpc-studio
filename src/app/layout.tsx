@@ -63,11 +63,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} h-full`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="min-h-full flex flex-col antialiased">
+      <body className="min-h-screen flex flex-col antialiased bg-white text-[#2a1c0d]">
         <Navbar />
-        <main className="flex-1 pt-16">{children}</main>
+        <main className="flex-1 pt-14">{children}</main>
         <Footer />
       </body>
     </html>

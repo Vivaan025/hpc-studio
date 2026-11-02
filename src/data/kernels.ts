@@ -74,6 +74,42 @@ __global__ void matmul_tiled(float* A, float* B, float* C, int N) {
 }`,
       },
       {
+        id: "tiled-walkthrough",
+        name: "Tiled — Step by Step",
+        description:
+          "A beginner-friendly visual walkthrough: understand every line of the tiled kernel from scratch — thread mapping, blockIdx/threadIdx indexing, shared memory, tile loading, barriers, dot-product accumulation, and the t-loop.",
+        complexity: "O(N³/TILE_SIZE) global reads",
+        performance: "~30% of peak",
+        language: "cuda",
+        code: `// Same kernel as "Tiled (Shared Memory)"
+// This tab walks through it step by step
+#define TILE_SIZE 4
+
+__global__ void matmul_tiled(float* A, float* B, float* C, int N) {
+    __shared__ float sA[TILE_SIZE][TILE_SIZE];
+    __shared__ float sB[TILE_SIZE][TILE_SIZE];
+
+    int row = blockIdx.y * TILE_SIZE + threadIdx.y;
+    int col = blockIdx.x * TILE_SIZE + threadIdx.x;
+    float sum = 0.0f;
+
+    for (int t = 0; t < (N + TILE_SIZE - 1) / TILE_SIZE; t++) {
+        sA[threadIdx.y][threadIdx.x] = A[row * N + t * TILE_SIZE + threadIdx.x];
+        sB[threadIdx.y][threadIdx.x] = B[(t * TILE_SIZE + threadIdx.y) * N + col];
+
+        __syncthreads(); // barrier 1: tile fully loaded
+
+        for (int k = 0; k < TILE_SIZE; k++)
+            sum += sA[threadIdx.y][k] * sB[k][threadIdx.x];
+
+        __syncthreads(); // barrier 2: tile fully consumed
+    }
+
+    if (row < N && col < N) C[row * N + col] = sum;
+}`,
+      },
+
+      {
         id: "coalesced",
         name: "Memory Coalesced",
         description:

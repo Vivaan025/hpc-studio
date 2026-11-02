@@ -9,28 +9,27 @@ export const SITE = {
 export const NAV_LINKS = [
   { label: "Kernels", href: "/kernels" },
   { label: "Blog", href: "/blog" },
-  // { label: "About", href: "/about" },
 ] as const;
 
 export const DIFFICULTY_COLORS = {
-  beginner: { bg: "bg-accent-green/10", text: "text-accent-green", label: "Beginner" },
-  intermediate: { bg: "bg-accent-orange/10", text: "text-accent-orange", label: "Intermediate" },
-  advanced: { bg: "bg-accent-red/10", text: "text-accent-red", label: "Advanced" },
+  beginner: { bg: "bg-surface", text: "text-text-secondary", label: "Beginner" },
+  intermediate: { bg: "bg-surface-elevated", text: "text-text-primary", label: "Intermediate" },
+  advanced: { bg: "bg-primary", text: "text-white", label: "Advanced" },
 } as const;
 
 export const ANIMATION_SPEEDS = [0.25, 0.5, 1, 1.5, 2, 4] as const;
 
 export const COLORS = {
-  background: "#0a0a0f",
-  surface: "#12121a",
-  surfaceElevated: "#1a1a2e",
-  borderSubtle: "#2a2a3e",
-  primary: "#6366f1",
-  primaryGlow: "#818cf8",
-  secondary: "#22d3ee",
-  accentGreen: "#4ade80",
-  accentOrange: "#fb923c",
-  accentRed: "#f87171",
-  textPrimary: "#e2e8f0",
-  textSecondary: "#94a3b8",
+  background: "#f7f0e1",
+  surface: "#f1e7d5",
+  surfaceElevated: "#ebe0ca",
+  borderSubtle: "#dccfb2",
+  borderStrong: "#cbbb98",
+  primary: "#2a1c0d",
+  primaryHover: "#41301c",
+  secondary: "#5e4a30",
+  accent: "#1c1206",
+  textPrimary: "#2a1c0d",
+  textSecondary: "#5e4a30",
+  textMuted: "#967f5e",
 } as const;
