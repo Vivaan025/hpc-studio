@@ -21,7 +21,7 @@ And a little GPU toy on the home page. Click it. Hold the mouse down. Try the `o
 
 ## Who this is for
 
-Me from two years ago. If you can read a `for` loop and have heard the word "thread", you're ready. If you already write CUDA for a living, the visualizations are still a nice way to explain things to your teammates.
+Anyone who has stared at a CUDA tutorial, nodded along, and still had no idea what the GPU was actually doing. You don't need a GPU to follow along, and you don't need to have written a kernel before. You just need to be the kind of person who wants to see the thing move instead of reading another paragraph about it.
 
 ## Run it locally
 
